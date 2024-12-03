@@ -1,6 +1,5 @@
 import * as dao from "./dao.js";
 import * as modulesDao from "../Modules/dao.js";
-
 import * as assignmentsDao from "../Assignments/dao.js";
 
 
@@ -9,23 +8,17 @@ export default function CourseRoutes(app) {
     // assignment
     const findAssignmentsForCourses = (req, res) => {
         let { courseId } = req.params;
-        if (courseId === "current") {
-            const currentCourse = req.session["currentCourse"];
-            if (!currentCourse) {
-                res.sendStatus(401);
-                return;
-            }
-            courseId = currentCourse._id;
-        }
-        const courses = courseDao.findCoursesForEnrolledUser(userId);
-        res.json(courses);
+        const assignments = assignmentsDao.findAssignmentsForCourse(courseId);
+        res.json(assignments)
+   
     };
-    const createAssignment = (req, res) => {
-        const currentCourse = req.session["currentCourse"];
-        const newAssignment = courseDao.createCourse(req.body);
-        dao.assignedAssignments(currentCourse._id, newAssignment._id);
-        res.json(newAssignment);
-      };
+
+    // const createAssignment = (req, res) => {
+    //     const currentCourse = req.session["currentCourse"];
+    //     const newAssignment = courseDao.createCourse(req.body);
+    //     dao.assignedAssignments(currentCourse._id, newAssignment._id);
+    //     res.json(newAssignment);
+    //   };
     
 
     // courses
@@ -59,9 +52,25 @@ export default function CourseRoutes(app) {
         res.send(newModule);
     });
 
+
+
     // assignments
-    app.get("/api/users/:courseId/assignments", findAssignmentsForCourses);
-    app.post("/api/users/current/assignments", createAssignment);
+    app.post("/api/courses/:courseId/assignments", (req, res) => {
+        const { courseId } = req.params;
+        // console.log(courseId)
+        const assignment = {
+          ...req.body,
+          course: courseId,
+        };
+        // console.log(assignment)
+        const newAssignment = assignmentsDao.createAssignment(assignment);
+        // console.log(newAssignment)
+        res.send(newAssignment);
+      });
+    
+    // assignments
+    app.get("/api/courses/:courseId/assignments", findAssignmentsForCourses);
+    // app.post("/api/users/current/assignments", createAssignment);
 
 
 }

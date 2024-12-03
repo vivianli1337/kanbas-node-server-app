@@ -5,22 +5,22 @@ import Database from "../Database/index.js";
 export function createAssignment(assignment) {
     const newAssignment = { ...assignment, _id: Date.now().toString() };
     Database.assignments = [...Database.assignments, newAssignment];
+    console.log(Database.assignments)
     return newAssignment;
 }
-
 
 // retrieve
 export function findAllAssignments() {
     return Database.assignments;
 }
 
-export function findAssignmentsForCourses(aId) {
-    const { assignments, courses } = Database;
-    const assignedAssignments = assignments.filter((assignments) =>
-        assignments.some((assignments) => assignments._id === aId && courses._id === assignments.courses));
+export function findAssignmentsForCourse(courseId) {
+    const { assignments } = Database;
+    const assignedAssignments = assignments.filter((assignment) =>
+        courseId === assignment.course);
+    console.log(Database.assignments)
     return assignedAssignments;
 }
-
 
 //update 
 export function updateAssignment(aId, assignmentUpdates) {
@@ -28,12 +28,11 @@ export function updateAssignment(aId, assignmentUpdates) {
     const assignment = assignments.find((assignment) => assignment._id === aId);
     Object.assign(assignment, assignmentUpdates);
     return assignment;
-  }
-  
+}
+
 
 // delete
 export function deleteAssignment(aId) {
-    const { assignments, courses } = Database;
+    const { assignments } = Database;
     Database.assignments = assignments.filter((assignments) => assignments._id !== aId);
-  }
-  
+}
