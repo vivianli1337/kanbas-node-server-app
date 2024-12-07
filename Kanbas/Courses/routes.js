@@ -7,9 +7,9 @@ import * as enrollmentsDao from "../Enrollments/dao.js";
 export default function CourseRoutes(app) {
 
     // assignment
-    const findAssignmentsForCourses = (req, res) => {
+    const findAssignmentsForCourses = async (req, res) => {
         let { courseId } = req.params;
-        const assignments = assignmentsDao.findAssignmentsForCourse(courseId);
+        const assignments = await assignmentsDao.findAssignmentsForCourse(courseId);
         res.json(assignments)
 
     };
@@ -68,7 +68,7 @@ export default function CourseRoutes(app) {
 
 
     // assignments
-    app.post("/api/courses/:courseId/assignments", (req, res) => {
+    app.post("/api/courses/:courseId/assignments", async (req, res) => {
         const { courseId } = req.params;
         // console.log(courseId)
         const assignment = {
@@ -76,7 +76,7 @@ export default function CourseRoutes(app) {
             course: courseId,
         };
         // console.log(assignment)
-        const newAssignment = assignmentsDao.createAssignment(assignment);
+        const newAssignment = await assignmentsDao.createAssignment(assignment);
         // console.log(newAssignment)
         res.send(newAssignment);
     });

@@ -1,4 +1,5 @@
 import Database from "../Database/index.js";
+import model from "./model.js"
 
 export function createModule(module) {
     // const newModule = { ...module, _id: Date.now().toString() };
