@@ -1,4 +1,10 @@
 import express from 'express';
+
+// a6 mongoose
+import mongoose from "mongoose";
+import "dotenv/config";
+
+
 import Hello from './hello.js';
 import Lab5 from "./Lab5/index.js";
 import PathParameters from './Lab5/PathParameters.js';
@@ -16,8 +22,11 @@ import EnrollmentRoutes from './Kanbas/Enrollments/routes.js';
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 
 import session from "express-session";
-import "dotenv/config";
+// import "dotenv/config";
 
+// connect to mongodb through mongoose:
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
+mongoose.connect(CONNECTION_STRING);
 
 // must do first
 const app = express();
